@@ -3,7 +3,9 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
-const Employee = require('./lib/Employee');
+
+const fs = require("fs");
+const style = require("./src/style");
 
 let teamArray = [];
 
@@ -234,9 +236,96 @@ inquirer.prompt([
   
 }
 
+function generateHtml(teamArray) {
+  return `./dist/${teamArray[0].toLowerCase().split(' ').join('-')}.html`
+}
+
+function generateTitle(teamArray) {
+  return teamArray[0].replace(/\w\S*/g, txt => {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+
 
 function completeTeam() {
-
+    console.log("You have now successfully created your team's profile");
   
+    const htmlArray = [];
+    const htmlBeginning = `
+    <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>${generateTitle(teamArray)}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+            <style>
+             ${style}
+            </style>
+        </head>
+        <body>
+            <div class="banner-bar">
+                <h1>${teamArray[0]}</h1>
+            </div>
+            <div class="card-container">
+    `;
+
+    htmlArray.push(htmlBeginning);
+
+    for (let i = 1; i < teamArray.length; i++) {
+        let object = `
+        <div class="member-card">
+            <div class="card-top">
+                <h2>${teamArray[i].name}</h2>
+                <h2>${teamArray[i].role}</h2>
+            </div>
+            <div class="card-bottom">
+                <p>ID: ${teamArray[i].id}</p>
+                <p>Email: <a href="mailto:${teamArray[i].email}">${teamArray[i].email}</a></p>
+        `;
+
+        if (teamArray[i].phoneNumber) {
+            object += `
+            <p>Office Number: ${teamArray[i].phoneNumber}</p>
+            `
+        }
+
+        if (teamArray[i].github) {
+            object += `
+            <p>GitHub: <a href="https://github.com/${teamArray[i].github}" target="_blank">${teamArray[i].github}</a></p>
+            `
+        }
+
+        if (teamArray[i].school) {
+            object += `
+            <p>School: ${teamArray[i].school}</p>
+            `
+        }
+
+        object += `
+            </div>
+            </div>
+        `;
+
+        htmlArray.push(object)
+    }
+
+    const htmlEnd = `
+    </div>
+    </body>
+    </html>
+    `;
+
+    htmlArray.push(htmlEnd);
+
+    fs.writeFile(generateHtml(teamArray), htmlArray.join(""), function (err) {
+        if (err) {
+            throw err;
+        }
+    })
 }
+
+
 prompts();
