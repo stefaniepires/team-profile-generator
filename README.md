@@ -31,7 +31,7 @@ https://drive.google.com/file/d/1M5Vx9GlL83KDYlHXp86EmGIGr-ktaqTn/view
 
   ### Questions?
   Contact me at 
-  Email: stefaniectinsley@gmail.com
-  GitHub: https://github.com/steftinsley
+  Email: stefaniepires91@gmail.com
+  GitHub: https://github.com/stefaniepires
   
   ![Screenshot](https://github.com/steftinsley/team-profile-generator/blob/main/src/screenshot_.JPG)
